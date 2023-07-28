@@ -5,7 +5,16 @@
   --nav-social-hover-color: #6c6c6c;
   --nav-social-border-color: #000000;
   --nav-social-border-hover-color: #6c6c6c;
+
+  --background-color: red;
 }
+
+
+
+body{
+  background-color: var(--background-color);
+}
+
 
 
 

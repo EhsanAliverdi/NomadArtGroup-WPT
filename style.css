@@ -8,14 +8,3 @@ Text Domain: nomadartgroup
 */
 
 
-/* Admin Notice Styles */
-.notice {
-    margin-bottom: 20px;
-    position: relative;
-}
-.notice.is-dismissible .notice-dismiss {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
