@@ -1,14 +1,13 @@
 <?php
 function render_header($page_type = 'dark'){
     ?>
-    <div class="d-flex">
-        <div class="d-flex flex-grow-1 align-self-center" >
+    <div id="nomadHeader" class="d-flex">
+        <div class="d-flex flex-grow-1 align-self-center ms-2" >
             <?php render_navbar_logo($page_type); ?>
         </div>
-        <div class="justify-content-center">
+        <div class="d-flex align-self-center">
             <?php render_navbar(); ?>
         </div>
-
     </div>
     <?php
 }
@@ -33,16 +32,12 @@ function render_navbar_logo($page_type = 'dark') {
 
 function render_navbar($page_type = 'dark'){
     ?>
-    <div id="menuHolder" class="justify-content-center">
+    <div class="me-2">
         <a onclick="menuToggle()"><i class="fa fa-bars fa-2xl" ></i></a>
-        <div id="menuDrawer">
-            <div class="p-4 border-bottom">
-                <div class='row'>
-                    <div class="col text-end ">
-                        <i class="fas fa-times" role="btn" onclick="menuToggle()"></i>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div id="menuHolder" class="justify-content-center">
+           <div id="menuDrawer">
+               <i id="menuCloseBtn" class="fas fa-times" role="btn" onclick="menuToggle()"></i>
             <?php  wp_nav_menu(array(
                 'theme_location' => 'primary',
                 'container' => false,
