@@ -6,12 +6,13 @@ define( 'TEMPLATE_DIR', get_template_directory() );
 define( 'TEMPLATE_URI', get_template_directory_uri() );
 define( 'TEMPLATE_VERSION', wp_get_theme()->get('Version') );
 const TEMPLATE_CSS_DIR = TEMPLATE_URI . '/assets/css/';
-const TEMPLATE_JS_DIR  = TEMPLATE_URI . '/assets/js/';
+const TEMPLATE_JS_DIR  = TEMPLATE_DIR . '/assets/js/';
 const TEMPLATE_CLASSES_DIR  = TEMPLATE_DIR . '/classes/';
 const TEMPLATE_FONT_DIR = TEMPLATE_URI . '/assets/font/';
 const TEMPLATE_IMAGES_DIR = TEMPLATE_URI . '/assets/images/';
 const TEMPLATE_INC_DIR = TEMPLATE_DIR . '/inc/';
 //</editor-fold>
+
 
 
 
@@ -53,6 +54,7 @@ function setup_theme_supports(){
     add_theme_support( 'align-wide' );
     add_theme_support( 'editor-styles' );
     add_theme_support( 'responsive-embeds' );
+    add_theme_support('page-templates');
 
 }
 function register_menus(){
@@ -67,36 +69,31 @@ function register_required(){
     require_once TEMPLATE_INC_DIR. 'template_customizer.php';
 
 }
+
+function enqueue_scripts() {
+    wp_enqueue_script( 'jquery' );
+    // Enqueue jQuery from CDN
+    wp_enqueue_script( 'bootstrap', get_stylesheet_directory_uri() . '/assets/js/bootstrap.bundle.js', array('jquery'), '5.1.0', true );
+//    wp_enqueue_script( 'fontawesome-min', get_stylesheet_directory_uri() . '/assets/js/fontawesome.min.js', array('jquery'), '', true );
+    wp_enqueue_script( 'popper-min', get_stylesheet_directory_uri() . '/assets/js/popper.min.js', array('jquery'), '', true );
+    wp_enqueue_script( 'owl-carousel-min', get_stylesheet_directory_uri() . '/assets/js/owl.carousel.min.js', array('jquery'), '', true );
+    wp_enqueue_script( 'jquery-sticky', get_stylesheet_directory_uri() . '/assets/js/jquery.sticky.js', array('jquery'), '', true );
+    wp_enqueue_script( 'eawpt-script', get_stylesheet_directory_uri() . '/assets/js/script.js', array('jquery'), TEMPLATE_VERSION, true );
+    wp_enqueue_script('main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '', true);
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 function enqueue_styles() {
     wp_enqueue_style( 'bootstrap-css', TEMPLATE_CSS_DIR . 'bootstrap.min.css', array(), '', 'all' );
     wp_enqueue_style( 'fontawesome.min.css', TEMPLATE_CSS_DIR . 'fontawesome.min.css', array(), '', 'all' );
     wp_enqueue_style( 'style.css', TEMPLATE_CSS_DIR . 'style.css', array(), TEMPLATE_VERSION, 'all' );
     wp_enqueue_style('main.css', TEMPLATE_CSS_DIR . 'main.css');
 
+
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
 
-
-function enqueue_scripts() {
-    wp_enqueue_script( 'jquery' );
-    // Enqueue jQuery from CDN
-    wp_enqueue_script( 'bootstrap-js', TEMPLATE_JS_DIR . 'bootstrap.bundle.js', array('jquery'), '5.1.0', true );
-    wp_enqueue_script( 'fontawesome.min.js', TEMPLATE_JS_DIR . 'fontawesome.min.js', array('jquery'), '', true );
-    wp_enqueue_script( 'popper.min.js', TEMPLATE_JS_DIR . 'popper.min.js', array('jquery'), '', true );
-    wp_enqueue_script( 'owl.carousel.min.js', TEMPLATE_JS_DIR . 'owl.carousel.min.js', array('jquery'), '', true );
-    wp_enqueue_script( 'jquery.sticky.js', TEMPLATE_JS_DIR . 'jquery.sticky.js', array('jquery'), '', true );
-    wp_enqueue_script( 'eawpt-script.js', TEMPLATE_JS_DIR . 'script.js', array('jquery'), TEMPLATE_VERSION, true );
-
-
-    wp_enqueue_script('main', TEMPLATE_JS_DIR . 'main.js', array('jquery'), '', true);
-
-
-}
-add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
-
 function enqueue_google_fonts() {
-    // Replace 'Cutive+Mono' and 'sans-serif' with the desired Google Fonts you want to load.
-    // You can add multiple fonts by separating them with '|' character.
+
     $font_families = 'family=Cutive+Mono';
 
     // Generate the Google Fonts URL with the specified font families.
@@ -152,7 +149,7 @@ function get_page_type() {
     // Set custom data based on the page template
     if (is_home()) {
         return 'home';
-    } elseif ($current_template === 'template-light.php') {
+    } elseif ($current_template === 'content-page-light.php') {
         return 'light';
     } else {
         // Default data for other templates
@@ -209,5 +206,22 @@ function theme_custom_css() {
     </style>
     <?php
 }
-add_action('wp_head', 'theme_custom_css');
+//add_action('wp_head', 'theme_custom_css');
 
+
+// Add a filter to customize the excerpt length
+function custom_excerpt_length($length) {
+    return 20; // Set your desired length here (e.g., 20 words)
+}
+add_filter('excerpt_length', 'custom_excerpt_length');
+
+function custom_posts_per_page( $query ) {
+    if ( is_admin() || ! $query->is_main_query() ) {
+        return;
+    }
+
+    if ( $query->is_archive() ) { // You can customize this condition based on where you want to apply the change (e.g., is_home(), is_category(), is_tag(), etc.)
+        $query->set( 'posts_per_page', 9 ); // Set the number of posts per page (e.g., 12 in this case)
+    }
+}
+add_action( 'pre_get_posts', 'custom_posts_per_page' );

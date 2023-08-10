@@ -7,4 +7,4 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-<?php render_header(get_page_type()); ?>
+<?php render_header($page_type = 'dark'); ?>
