@@ -225,3 +225,34 @@ function custom_posts_per_page( $query ) {
     }
 }
 add_action( 'pre_get_posts', 'custom_posts_per_page' );
+
+function register_footer_widget_areas() {
+    register_sidebar(array(
+        'name' => 'Footer Column 1',
+        'id' => 'footer-column-1',
+        'before_widget' => '<div class="widget">',
+        'after_widget' => '</div>',
+    ));
+
+    register_sidebar(array(
+        'name' => 'Footer Column 2',
+        'id' => 'footer-column-2',
+        'before_widget' => '<div class="widget">',
+        'after_widget' => '</div>',
+    ));
+    register_sidebar(array(
+        'name' => 'Footer Column 3',
+        'id' => 'footer-column-3',
+        'before_widget' => '<div class="widget">',
+        'after_widget' => '</div>',
+    ));
+    register_sidebar(array(
+        'name' => 'Footer Column 4',
+        'id' => 'footer-column-4',
+        'before_widget' => '<div class="widget">',
+        'after_widget' => '</div>',
+    ));
+
+
+}
+add_action('widgets_init', 'register_footer_widget_areas');

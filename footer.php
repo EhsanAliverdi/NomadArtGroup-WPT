@@ -9,114 +9,84 @@
  */
 
 
-wp_footer();?>
+wp_footer(); ?>
 
 <!-- Footer -->
 <footer class="footer-bs text-center text-lg-start ">
-    <!-- Section: Social media -->
-    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-        <!-- Left -->
-        <div class="me-5 d-none d-md-block">
-            <?php render_footer_logo(); ?>
-        </div>
-        <!-- Left -->
-
-        <!-- Right -->
-        <div>
-            <?php print get_social_media_links(); ?>
-        </div>
-        <!-- Right -->
-    </section>
-    <!-- Section: Social media -->
-
-    <!-- Section: Links  -->
-    <section class="">
-        <div class="container text-center text-md-start mt-5">
-            <!-- Grid row -->
-            <div class="row mt-3">
-                <!-- Grid column -->
-                <?php if (get_theme_mod('footer_show_summary',true)):?>
-                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                    <!-- Content -->
-                    <h6 class="text-uppercase fw-bold mb-4">
-                     <?php echo get_theme_mod('footer_summary_heading','CompanyName'); ?>
-                    </h6>
-                    <p>
-                        <?php echo get_theme_mod('footer_summary_text','CompanyName'); ?>
-                    </p>
-                </div>
-                <?php endif; ?>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                    <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        Products
-                    </h6>
-                    <p>
-                        <a href="#!" class="text-reset">Angular</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-reset">React</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-reset">Vue</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-reset">Laravel</a>
-                    </p>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                    <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        Useful links
-                    </h6>
-                    <p>
-                        <a href="#!" class="text-reset">Pricing</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-reset">Settings</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-reset">Orders</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-reset">Help</a>
-                    </p>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <?php if(get_theme_mod('footer_show_contact',true)):?>
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                    <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-                    <p><i class="fas fa-home me-3"></i> <?php echo get_theme_mod('contact_address','Adress') ?></p>
-                    <p>
-                        <i class="fas fa-envelope me-3"></i>
-                        <?php echo get_theme_mod('contact_email_address','admin@nomadartgroup.com') ?>
-                    </p>
-                    <p><i class="fas fa-phone me-3"></i> <?php echo get_theme_mod('contact_phone_number','+61 448 444 392') ?></p>
+    <!-- Section: Hot Links -->
+    <?php if (get_theme_mod('footer_show_hotlinks_section', true)): ?>
+        <section class="footer-custom-links">
+            <div class="container-fluid">
+                <div class="row">
+                    <?php
+                    $donation_url = esc_url(get_theme_mod('footer_donation_url', '#'));
+                    $tickets_url = esc_url(get_theme_mod('footer_tickets_url', '#'));
+                        ?>
+                        <div class="col-md-6 text-md-start mb-3 text-uppercase">
+                            <h1><a href="<?php echo $donation_url; ?>" class="custom-link"><?php esc_html_e('Donation', 'nomad'); ?></a></h1>
+                        </div>
+                        <div class="col-md-6 text-md-end text-uppercase">
+                            <h1> <a href="<?php echo $tickets_url; ?>" class="custom-link"><?php esc_html_e('Tickets', 'nomad'); ?></a></h1>
+                        </div>
 
                 </div>
-                <?php endif; ?>
-
-                <!-- Grid column -->
             </div>
-            <!-- Grid row -->
-        </div>
-    </section>
-    <!-- Section: Links  -->
+        </section>
+    <?php endif; ?>
+    <!-- Section: Hot Links -->
+
+    <!-- Section: contact -->
+    <?php if (get_theme_mod('footer_show_contact_section', true)): ?>
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <!-- Left -->
+            <div class="me-5 d-none d-md-block">
+                <?php render_footer_logo(); ?>
+            </div>
+            <!-- Left -->
+
+            <!-- Right -->
+            <div>
+                <?php print get_social_media_links(); ?>
+            </div>
+            <!-- Right -->
+        </section>
+    <?php endif; ?>
+    <!-- Section: contact -->
+
+    <!-- Section: custom Widgets  -->
+    <?php if (get_theme_mod('footer_show_custom_widgets', true)): ?>
+        <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <div class="row mt-3">
+
+                    <?php
+                    $selected_columns = get_theme_mod('footer_custom-widgets_col', 'col-4');
+                    $num_columns = intval(substr($selected_columns, -1));
+                    $column_class = 'col-md-' . (12 / $num_columns) . ' mx-auto mb-4';
+
+                    for ($i = 1; $i <= $num_columns; $i++) {
+                        $sidebar_id = 'footer-column-' . $i;
+                        ?>
+
+                        <div class="<?php echo $column_class; ?>">
+                            <?php dynamic_sidebar($sidebar_id); ?>
+                        </div>
+
+                    <?php } ?>
+
+                    <!-- Add more columns as needed -->
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+    <!-- Section: custom Widgets  -->
 
     <!-- Copyright -->
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2021 Copyright:
-        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
+    <?php if (get_theme_mod('footer_show_copyright_section', true)): ?>
+        <section class="text-center p-4">
+            <?php echo esc_html(get_theme_mod('footer_copyright_text', '© 2023 Copyright: NomadArtGroup')); ?>
+        </section>
+    <?php endif; ?>
     <!-- Copyright -->
 </footer>
 <!-- Footer -->
