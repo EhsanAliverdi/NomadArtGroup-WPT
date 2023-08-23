@@ -149,43 +149,77 @@ function get_page_type() {
     // Set custom data based on the page template
     if (is_home()) {
         return 'home';
-    } elseif ($current_template === 'content-page-light.php') {
+    } elseif ($current_template === 'template-parts/content-page-light.php') {
         return 'light';
-    } else {
-        // Default data for other templates
+    }elseif ($current_template === 'template-parts/content-page-dark.php') {
         return 'dark';
     }
+    else {
+        // Default data for other templates
+        return 'unknown';
+    }
 }
-add_action('wp', 'get_page_type');
+
 
 function theme_custom_css() {
+
+
+    $background_default_colors = array(
+        'home' => '#000000',
+        'light' => '#ffffff',
+        'dark' => '#000000',
+    );
+    $default_colors = array(
+        'home' => '#ffffff',
+        'light' => '#000000',
+        'dark' => '#ffffff',
+    );
+
+    $default_font_settings = array(
+        'font-family'=> '\'Cutive Mono\', sans-serif',
+        'color'=> '',
+        'font-size'=> '',
+        'line-height'=> '',
+        'letter-spacing'=> '',
+    );
+
     $page_type = get_page_type();
-    $background_color = get_theme_mod('background_color_'.$page_type);
-    $color = get_theme_mod('text_color_'.$page_type);
+    $background_color = get_theme_mod('theme_'.$page_type.'_background_color', $background_default_colors[$page_type]);
+    $color = get_theme_mod('text_color_'.$page_type, $default_colors[$page_type]);
+    $footer_background_color = get_theme_mod('theme_'.$page_type.'_background_color', 'transparent');
+    $footer_border_color = get_theme_mod('theme_'.$page_type.'_footer_border_color', 'transparent');
+
 
     // Typography settings
-    $body_font = get_theme_mod('typography_body_setting');
-    $h1_font = get_theme_mod('typography_h_setting');
-    $h2_font = get_theme_mod('typography_h2_setting');
-    // Add more variables for h3, h4, h5, and h6 fonts as needed
+    $body_font = get_theme_mod('typography_body_setting_'.$page_type.'_page', '\'Cutive Mono\', sans-serif');
+    $h1_font = get_theme_mod('typography_h_setting_'.$page_type.'_page');
+    $h2_font = get_theme_mod('typography_h2_setting_'.$page_type.'_page');
+    $h3_font = get_theme_mod('typography_h3_setting_'.$page_type.'_page');
+    $h4_font = get_theme_mod('typography_h4_setting_'.$page_type.'_page');
+    $h5_font = get_theme_mod('typography_h5_setting_'.$page_type.'_page');
+    $h6_font = get_theme_mod('typography_h6_setting_'.$page_type.'_page');
+
 
     ?>
+    <h1><?php echo esc_attr($h1_font['font-family']); ?><h1>
     <style>
         :root {
             --background-color: <?php echo esc_attr($background_color); ?>;
+            --text-color:<?php echo esc_attr($color); ?>;
+            --footer-background-color:<?php echo esc_attr($footer_background_color); ?>;
+            --footer-border-color:<?php echo esc_attr($footer_border_color); ?>;
         }
 
         body {
-            background-color: var(--background-color);
         <?php echo 'font-family: '.$body_font['font-family'].';'; ?>
-        <?php echo 'color: '.$color.';'; ?>
         <?php echo 'font-size: '.$body_font['font-size'].';'; ?>
         <?php echo 'line-height: '.$body_font['line-height'].';'; ?>
         <?php echo 'letter-spacing: '.$body_font['letter-spacing'].';'; ?>
         <?php echo 'color: '.$body_font['color'].';'; ?>
+            /*font-family: 'Cutive Mono', sans-serif;*/
         }
 
-        h1 {
+        body {
         <?php echo 'font-family: '.$h1_font['font-family'].';'; ?>
         <?php echo 'font-size: '.$h1_font['font-size'].';'; ?>
         <?php echo 'line-height: '.$h1_font['line-height'].';'; ?>
@@ -201,12 +235,44 @@ function theme_custom_css() {
         <?php echo 'color: '.$h2_font['color'].';'; ?>
         }
 
-        /* Add styles for h3, h4, h5, and h6 as needed */
+        h3 {
+        <?php echo 'font-family: '.$h3_font['font-family'].';'; ?>
+        <?php echo 'font-size: '.$h3_font['font-size'].';'; ?>
+        <?php echo 'line-height: '.$h3_font['line-height'].';'; ?>
+        <?php echo 'letter-spacing: '.$h3_font['letter-spacing'].';'; ?>
+        <?php echo 'color: '.$h3_font['color'].';'; ?>
+        }
+
+        h4 {
+        <?php echo 'font-family: '.$h4_font['font-family'].';'; ?>
+        <?php echo 'font-size: '.$h4_font['font-size'].';'; ?>
+        <?php echo 'line-height: '.$h4_font['line-height'].';'; ?>
+        <?php echo 'letter-spacing: '.$h4_font['letter-spacing'].';'; ?>
+        <?php echo 'color: '.$h4_font['color'].';'; ?>
+        }
+
+        h5 {
+        <?php echo 'font-family: '.$h5_font['font-family'].';'; ?>
+        <?php echo 'font-size: '.$h5_font['font-size'].';'; ?>
+        <?php echo 'line-height: '.$h5_font['line-height'].';'; ?>
+        <?php echo 'letter-spacing: '.$h5_font['letter-spacing'].';'; ?>
+        <?php echo 'color: '.$h5_font['color'].';'; ?>
+        }
+
+        h6 {
+        <?php echo 'font-family: '.$h6_font['font-family'].';'; ?>
+        <?php echo 'font-size: '.$h6_font['font-size'].';'; ?>
+        <?php echo 'line-height: '.$h6_font['line-height'].';'; ?>
+        <?php echo 'letter-spacing: '.$h6_font['letter-spacing'].';'; ?>
+        <?php echo 'color: '.$h6_font['color'].';'; ?>
+        }
+
+
 
     </style>
     <?php
 }
-//add_action('wp_head', 'theme_custom_css');
+add_action('wp_head', 'theme_custom_css');
 
 
 // Add a filter to customize the excerpt length

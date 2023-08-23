@@ -21,7 +21,7 @@
   --pagination-active-background-color:white;
 
 
-  --footer-border-top-color: #000000;
+  --footer-border-color: #000000;
   --footer-background-color: rgba(0, 0, 0, 0.6);
 }
 /*<editor-fold desc="General">*/
@@ -33,6 +33,7 @@ body{
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
+
 }
 
 
@@ -501,7 +502,9 @@ a.pagination-active {
 footer{
   background-color: var(--footer-background-color);
   color: var(--text-color);
-  border-top: solid 1px var(--footer-border-top-color);
+  border-top: solid 1px var(--footer-border-color);
 }
-
+section.footer-custom-links a {
+  color: var(--text-color);
+}
 /*</editor-fold>*/
